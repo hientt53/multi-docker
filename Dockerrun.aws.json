@@ -1,0 +1,30 @@
+{
+    "AWSEBDockerrunVersin": 2,
+    "containerDefinitions": [
+        {
+            "name": "client", 
+            "image": "p4fun/multi-client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server", 
+            "image": "p4fun/multi-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker", 
+            "image": "p4fun/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "nginx", 
+            "image": "p4fun/nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "links": ["client", "server"]
+        }
+    ]
+}
