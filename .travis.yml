@@ -3,17 +3,17 @@ services:
   - docker
 
 before_install:
-  - docker build -t p4fun/react-test ./client -f ./client/Dockerfile.dev
+  - docker build -t p4fun/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run  p4fun/react-test npm test -- --coverage
+  - docker run p4fun/react-test npm test -- --coverage
 
 after_success:
   - docker build -t p4fun/multi-client ./client
   - docker build -t p4fun/multi-nginx ./nginx
   - docker build -t p4fun/multi-server ./server
   - docker build -t p4fun/multi-worker ./worker
-  # Log in to the docker cli
+  # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
   - docker push p4fun/multi-client
@@ -21,18 +21,15 @@ after_success:
   - docker push p4fun/multi-server
   - docker push p4fun/multi-worker
 
-before_deploy: "echo before deploy"
-
 deploy:
   provider: elasticbeanstalk
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  region: "ap-southeast-1"
-  app: "multi-docker"
-  env: "MultiDocker-env-1"
-  bucket_name: "elasticbeanstalk-ap-southeast-1-160937858564"
-  bucket_path: "docker"
+  region: us-west-1
+  app: multi-docker
+  env: MultiDocker-env
+  bucket_name: elasticbeanstalk-ap-southeast-1-160937858564
+  bucket_path: docker
   on:
     branch: master
-
-after_deploy: "echo after deploy"
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
