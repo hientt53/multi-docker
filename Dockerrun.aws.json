@@ -24,7 +24,7 @@
         },
         {
             "name": "nginx", 
-            "image": "p4fun/nginx",
+            "image": "p4fun/multi-nginx",
             "hostname": "nginx",
             "essential": true,
             "links": ["client", "server"],
