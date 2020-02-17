@@ -20,3 +20,16 @@ after_success:
   - docker push p4fun/multi-nginx
   - docker push p4fun/multi-server
   - docker push p4fun/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
+  region: ap-southeast-1
+  app: multi-docker
+  env: MultiDocker-env-1
+  bucket_name: elasticbeanstalk-ap-southeast-1-160937858564 
+  on:
+    branch: master
+
